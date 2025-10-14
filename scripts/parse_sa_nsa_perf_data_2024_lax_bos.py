@@ -1535,7 +1535,7 @@ def extract_overall_latency_dist():
         fh.close()
    
 def get_ho_duration():
-    if 0:
+    if 1:
         drive_trip_base = "../raw_data/data_2024/ho_duration_data/"
 
         ho_duration_files = glob.glob(drive_trip_base + "*.xlsx")
@@ -1887,62 +1887,12 @@ def get_ho_duration():
                     sa_latency_sec_list.append([ho_latency, fiveg_cipher, fiveg_integrity, intra_inter_str])
                     sa_latency_sec_dict[security_file].append([ho_latency, fiveg_cipher, fiveg_integrity, intra_inter_str])
 
-       
-        color_dict = {'5G-cipher-only' : 'salmon', '5G-cipher+lte-(cipher+integrity)' : 'black', 'no-5G-cipher-integrity' : 'slategrey', 'no-5G-or-lte-cipher-integrity' : 'slategrey', '5G-cipher+5G-integrity' : 'black'}
-        label_dict = {'5G-cipher-only' : '5G cipher only', '5G-cipher+lte-(cipher+integrity)' : '5G cipher & LTE\n(cipher + integrity)', 'no-5G-cipher-integrity' : 'No cipher and integrity', 'no-5G-or-lte-cipher-integrity' : 'No cipher and integrity', '5G-cipher+5G-integrity' : '5G cipher & 5G integrity'}
-        sa_sec_dict = {'5G-cipher-only' : [], '5G-integrity-only' : [], '5G-cipher+5G-integrity' : [], 'no-5G-cipher-integrity' : [], 'unknown' : []}
-        for sa_latency_sec_combo in sa_latency_sec_list:
-            ho_latency, cipher, integrity, inter_intra_str = sa_latency_sec_combo
-            if not pd.isnull(cipher) and not pd.isnull(integrity):
-                sa_sec_dict['5G-cipher+5G-integrity'].append(ho_latency)
-            elif not pd.isnull(cipher) and pd.isnull(integrity):
-                sa_sec_dict['5G-cipher-only'].append(ho_latency)
-            elif pd.isnull(cipher) and not pd.isnull(integrity):
-                sa_sec_dict['5G-integrity-only'].append(ho_latency)
-            elif pd.isnull(cipher) and pd.isnull(integrity):
-                sa_sec_dict['no-5G-cipher-integrity'].append(ho_latency)
-            else:
-                sa_sec_dict['unknown'].append(sa_latency_sec_combo)
+        fh = open("../pkls/driving_trip_lax_bos_2024/ho_duration_security.pkl", "wb")
+        pkl.dump([nsa_latency_sec_list, sa_latency_sec_list, sa_latency_sec_dict], fh)
+        fh.close()
 
 
-        nsa_sec_dict = {'5G-cipher-only' : [],  '5G-cipher+lte-(cipher+integrity)' : [], 'no-5G-or-lte-cipher-integrity' : [], 'unknown' : []}
-        for nsa_latency_sec_combo in nsa_latency_sec_list:
-            ho_latency, fiveg_cipher, fiveg_integrity, lte_cipher, lte_integrity, intra_inter_str = nsa_latency_sec_combo
-            if not pd.isnull(fiveg_cipher) and pd.isnull(lte_cipher):
-                nsa_sec_dict['5G-cipher-only'].append(ho_latency)
-            elif not pd.isnull(fiveg_cipher) and not pd.isnull(lte_cipher):
-                nsa_sec_dict['5G-cipher+lte-(cipher+integrity)'].append(ho_latency)
-            elif pd.isnull(fiveg_cipher) and  pd.isnull(lte_cipher):
-                nsa_sec_dict['no-5G-or-lte-cipher-integrity'].append(ho_latency)
-            else:
-                nsa_sec_dict['unknown'].append(ho_latency)
 
-        fig, ax = plt.subplots(figsize=(8, 4))
-        for sec_type in nsa_sec_dict.keys():
-            if len(nsa_sec_dict[sec_type]) == 0:
-                continue 
-            sorted_data = np.sort(nsa_sec_dict[sec_type])
-            ax.plot(sorted_data, np.linspace(0, 1, sorted_data.size), label="NSA (" + label_dict[sec_type] + ")", color=color_dict[sec_type])
-
-        for sec_type in sa_sec_dict.keys():
-            if len(sa_sec_dict[sec_type]) == 0:
-                continue 
-            sorted_data = np.sort(sa_sec_dict[sec_type])
-            ax.plot(sorted_data, np.linspace(0, 1, sorted_data.size), label="SA (" + label_dict[sec_type]+ ")" , color=color_dict[sec_type], ls='--')
-
-        ax.set_ylim(0, 1)
-        ax.set_xlim(0, 0.12)
-        # ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2, fontsize=10)
-        # ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.02), ncol=2, fontsize=11, frameon=True)
-        ax.legend(loc='lower right', fontsize=14)
-        ax.grid(True)
-        ax.set_ylabel("CDF")
-        ax.set_xlabel("Handover duration (s)")
-        plt.tight_layout()
-        plt.savefig('../plots/yearwise/ho_duration_security_break.pdf')
-        plt.close()
-
-# function calls 
 if 1:
     get_ho_duration()
 

@@ -446,7 +446,7 @@ if 1:
         ax.grid(True)
 
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/tmobile_nsa_sa_dl_xput.pdf')
+        plt.savefig('../plots/yearwise/fig_7a_tmobile_nsa_sa_dl_xput.pdf')
         plt.close()
         
         nsa_arfcn_list.extend(list(merged_df['5G KPI PCell RF NR-ARFCN_x'].dropna()))
@@ -613,7 +613,7 @@ if 1:
         ax.grid(True)
 
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/tmobile_nsa_sa_ul_xput.pdf')
+        plt.savefig('../plots/yearwise/fig_7c_tmobile_nsa_sa_ul_xput.pdf')
         plt.close()
 
         nsa_arfcn_list.extend(list(merged_df['5G KPI PCell RF NR-ARFCN_x'].dropna()))
@@ -777,5 +777,5 @@ if 1:
     ax[0].set_ylabel('CDF', fontsize=20)
     fig.text(0.5, -0.04, "$BW_{SA} - BW_{NSA}$ (MHz)", ha='center', fontsize=20)
     plt.tight_layout()
-    plt.savefig('../plots/yearwise/tmobile_nsa_sa_bw_PCI_ARFCN_flattened.pdf')
+    plt.savefig('../plots/yearwise/fig_4a_tmobile_nsa_sa_bw_PCI_ARFCN_flattened.pdf')
     plt.close()

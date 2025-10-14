@@ -163,6 +163,10 @@ nsa_nr_nr_duration_inter_list_3, \
 nsa_inter_intra_dict_3 = pkl.load(fh)
 fh.close()
 
+fh = open("../pkls/driving_trip_lax_bos_2024/ho_duration_security.pkl", "rb")
+nsa_latency_sec_list, sa_latency_sec_list, sa_latency_sec_dict = pkl.load(fh)
+fh.close()
+
 if 1:
     if 1:
         # with LTE and others - First create copies to avoid modifying original data
@@ -252,7 +256,7 @@ if 1:
         plt.tight_layout()
 
         # Save figure
-        plt.savefig("../plots/yearwise/sa_nsa_coverage_all_stacked.pdf")
+        plt.savefig("../plots/yearwise/fig_3a_sa_nsa_coverage_all_stacked.pdf")
         plt.close()
 
 
@@ -368,7 +372,7 @@ if 1:
     ax.set_ylim(0, 160)
     ax.legend(['5G (NSA) - Big City', '5G (SA) - Big City', '5G (NSA) - Non-Big City', '5G (SA) - Non-Big City'], loc='upper center', fontsize=12)
     plt.tight_layout()
-    plt.savefig("../plots/yearwise/sa_nsa_city_breakdown.pdf")
+    plt.savefig("../plots/yearwise/fig_3b_sa_nsa_city_breakdown.pdf")
     plt.close()
 
     # xput cdf
@@ -393,7 +397,7 @@ if 1:
         ax.set_ylim(0, 1)
         ax.set_xlim(xmin=0, xmax=1200)
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/dl_sa_nsa_xput_overall.pdf')
+        plt.savefig('../plots/yearwise/fig_5a_dl_sa_nsa_xput_overall.pdf')
         plt.close()
 
         fig, ax = plt.subplots(figsize=(6, 4))
@@ -414,7 +418,7 @@ if 1:
         ax.set_ylim(0, 1)
         ax.set_xlim(xmin=0, xmax=120)
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/ul_sa_nsa_xput_overall.pdf')
+        plt.savefig('../plots/yearwise/fig_6a_ul_sa_nsa_xput_overall.pdf')
         plt.close()
 
     # 2023 dl ul bar
@@ -498,7 +502,7 @@ if 1:
 
         # Show the plot
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/dl_sa_nsa_bar_2023.pdf')
+        plt.savefig('../plots/yearwise/fig_5b_dl_sa_nsa_bar_2023.pdf')
         plt.close()
 
         # Extract values for plotting
@@ -537,7 +541,7 @@ if 1:
 
         # Show the plot
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/ul_sa_nsa_bar_2023.pdf')
+        plt.savefig('../plots/yearwise/fig_6a_ul_sa_nsa_bar_2023.pdf')
         plt.close()
 
 
@@ -621,7 +625,7 @@ if 1:
 
         # Show the plot
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/dl_sa_nsa_bar_2024.pdf')
+        plt.savefig('../plots/yearwise/fig_5b_dl_sa_nsa_bar_2024.pdf')
         plt.close()
 
 
@@ -661,7 +665,7 @@ if 1:
 
         # Show the plot
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/ul_sa_nsa_bar_2024.pdf')
+        plt.savefig('../plots/yearwise/fig_6b_ul_sa_nsa_bar_2024.pdf')
         plt.close()
 
     # carrier aggregation  - 2024
@@ -761,111 +765,6 @@ if 1:
             
             # overall CA distribution 
             if 1:
-                if 0:
-                    # Set up the figure and axis
-                    fig, ax = plt.subplots(figsize=(5, 4))
-                    # Set width of bars
-                    bar_width = 0.2
-                    # Positions for the bars
-                    positions = np.array([0, 1])
-
-                    # Create a gradient color spectrum (blue to red)
-                    import matplotlib.cm as cm
-                    # Get all unique CA values to determine color mapping
-                    all_ca_values = set()
-                    for distribution in [dl_ca_overall_distribution, ul_ca_overall_distribution]:
-                        for category in distribution.values():
-                            all_ca_values.update(category.keys())
-                    num_colors = len(all_ca_values)
-                    # Create a color map from a blue-to-red spectrum
-                    colors = cm.coolwarm(np.linspace(0, 1, num_colors))
-
-                    # Hatches for NSA and SA
-                    hatches = ['', '\\\\\\']
-
-                    # Process and plot DL data
-                    for i, category in enumerate(['NSA', 'SA']):
-                        bottom = 0
-                        ca_values = dl_ca_overall_distribution[category]
-                        # Calculate total for percentage
-                        total = sum(ca_values.values())
-                        
-                        for j, (ca, value) in enumerate(sorted(ca_values.items())):
-                            # Convert to percentage
-                            percentage = (value / total) * 100
-                            
-                            bar = ax.bar(positions[0] + (i - 0.5) * bar_width, percentage, bar_width,
-                                        bottom=bottom, color=colors[sorted(list(all_ca_values)).index(ca)],
-                                        edgecolor='black', hatch=hatches[i])
-                            bottom += percentage
-                            
-                            # Add value label in the middle of each segment
-                            # if percentage > 0:
-                            #     height = percentage / 2 + bottom - percentage
-                            #     ax.text(positions[0] + (i - 0.5) * bar_width, height,
-                            #             f'CA {ca}\n{percentage:.1f}%', ha='center', va='center', fontsize=9)
-
-                    # Process and plot UL data
-                    for i, category in enumerate(['NSA', 'SA']):
-                        bottom = 0
-                        ca_values = ul_ca_overall_distribution[category]
-                        # Calculate total for percentage
-                        total = sum(ca_values.values())
-                        
-                        for j, (ca, value) in enumerate(sorted(ca_values.items())):
-                            # Convert to percentage
-                            percentage = (value / total) * 100
-                            
-                            bar = ax.bar(positions[1] + (i - 0.5) * bar_width, percentage, bar_width,
-                                        bottom=bottom, color=colors[sorted(list(all_ca_values)).index(ca)],
-                                        edgecolor='black', hatch=hatches[i])
-                            bottom += percentage
-                            
-                            # Add value label in the middle of each segment
-                            # if percentage > 0:
-                            #     height = percentage / 2 + bottom - percentage
-                            #     ax.text(positions[1] + (i - 0.5) * bar_width, height,
-                            #             f'CA {ca}\n{percentage:.1f}%', ha='center', va='center', fontsize=9)
-
-                    # Add legend for CA values
-                    ca_values = set()
-                    for distribution in [dl_ca_overall_distribution, ul_ca_overall_distribution]:
-                        for category in distribution.values():
-                            ca_values.update(category.keys())
-
-                    # Create custom legend for CA values
-                    ca_legend_elements = [plt.Rectangle((0, 0), 1, 1, 
-                                                    facecolor=colors[sorted(list(all_ca_values)).index(ca)],
-                                                    edgecolor='black', label=f'CA {ca}')
-                                        for ca in sorted(ca_values)]
-
-                    # Create custom legend for NSA and SA (with hatches)
-                    hatch_legend_elements = [plt.Rectangle((0, 0), 1, 1, facecolor='white',
-                                                        edgecolor='black', hatch=hatches[i],
-                                                        label=category)
-                                            for i, category in enumerate(['NSA', 'SA'])]
-
-                    # Add both legends
-                    # ax.legend(handles=ca_legend_elements + hatch_legend_elements,
-                    #         loc='center', bbox_to_anchor=(1, 1))
-
-                    ax.legend(handles=ca_legend_elements + hatch_legend_elements,
-                            loc='best')
-                    # Set labels and title
-                    ax.set_xticks(positions)
-                    ax.set_xticklabels(['DL', 'UL'])
-                    ax.set_ylabel('%')  # Changed to % as requested
-                    # Title removed as requested
-
-                    # Add a grid for better readability
-                    ax.yaxis.grid(True, linestyle='--', alpha=0.7)
-
-                    # Adjust layout
-                    plt.tight_layout()
-
-                    # Show the plot
-                    plt.savefig('../plots/yearwise/sa_nsa_ca_overall_distribution.pdf')
-                    plt.close()
 
                 if 1:
                     # Set up the figure and axis
@@ -956,350 +855,10 @@ if 1:
                     plt.tight_layout()
 
                     # Show the plot
-                    plt.savefig('../plots/yearwise/sa_nsa_ca_overall_distribution_mod.pdf')
+                    plt.savefig('../plots/yearwise/fig_8b_sa_nsa_ca_overall_distribution_mod.pdf')
                     plt.close()
                     a = 1
 
-            # plot band distribution - DL
-            if 0:
-                # Process both NSA and SA data
-                processed_dl_ca_count = {
-                    'NSA': process_bands(dl_ca_count['NSA']),
-                    'SA': process_bands(dl_ca_count['SA'])
-                }
-
-                # Get color mapping
-                band_colors = get_band_color_mapping(processed_dl_ca_count)
-
-                # Find all unique CA values
-                all_cas = set()
-                for category in processed_dl_ca_count.values():
-                    all_cas.update(category.keys())
-                max_ca = max(all_cas) if all_cas else 0
-
-                # Create figure with 2 rows (NSA, SA) and max_ca columns
-                fig, axes = plt.subplots(2, max_ca, figsize=(5*max_ca, 8))
-                fig.patch.set_edgecolor('black')
-                fig.patch.set_linewidth(2)
-                # If max_ca is 1, axes will not be a 2D array, so convert to 2D
-                if max_ca == 1:
-                    axes = np.array(axes).reshape(2, 1)
-
-                # Categories to plot
-                categories = ['NSA', 'SA']
-
-                # Plot pie charts
-                for row, category in enumerate(categories):
-                    for col in range(max_ca):
-                        ca = col + 1  # CA values start from 1
-                        
-                        # If this CA exists for this category
-                        if ca in processed_dl_ca_count[category]:
-                            ax = axes[row, col]
-                            
-                            # Get band data for this CA
-                            bands_data = processed_dl_ca_count[category][ca]
-                            labels = list(bands_data.keys())
-                            sizes = list(bands_data.values())
-                            
-                            # Create label text with percentages
-                            # label_texts = [f"{label}\n({size:.1f}%)" for label, size in zip(labels, sizes)]
-                            label_texts = [label for label, size in zip(labels, sizes)]
-                            
-                            # Get colors for each band
-                            colors = [band_colors[band] for band in labels]
-                            
-                            # Use matplotlib's built-in pie chart with external labels
-                            wedges, texts = ax.pie(
-                                sizes,
-                                colors=colors,
-                                labels=label_texts,
-                                labeldistance=1.1,  # Position labels just outside the pie
-                                wedgeprops={'edgecolor': 'w', 'linewidth': 1},
-                                textprops={'fontsize': 16, 'ha': 'center'},  # Increased font size from 8 to 10
-                                startangle=90,
-                                radius=0.8  # Make pie slightly smaller to leave room for labels
-                            )
-                            
-                            # Draw connecting lines from pie to labels
-                            for i, wedge in enumerate(wedges):
-                                if sizes[i] < 3:  # Skip very small wedges to reduce clutter
-                                    texts[i].set_visible(False)
-                                    continue
-                                
-                                # Adjust text alignment for better readability
-                                angle = (wedge.theta1 + wedge.theta2) / 2
-                                if 90 < angle < 270:  # Left side of the pie
-                                    texts[i].set_ha('right')
-                                else:  # Right side of the pie
-                                    texts[i].set_ha('left')
-                            
-                            # Modified title format: "CA # (NSA/SA)" and made larger and bold
-                            ax.set_title(f"{ca} CA ({category})", fontsize=16, fontweight='bold')
-                        else:
-                            # If this CA doesn't exist for this category, hide the axes
-                            axes[row, col].axis('off')
-
-                # Adjust layout with extra padding for labels
-                plt.tight_layout(pad=2.0)
-
-                # Save figure
-                plt.savefig('../plots/yearwise/ca_band_dl_distribution.pdf', 
-                            bbox_inches='tight')
-                plt.close()
-                a = 1
-
-            # plot band distribution - DL - stacked
-            if 0:
-
-                # Color mapping function
-                def get_band_color_mapping(data):
-                    import matplotlib.cm as cm
-                    
-                    # Get all unique bands
-                    all_bands = set()
-                    for category in data.values():
-                        for ca_data in category.values():
-                            all_bands.update(ca_data.keys())
-                    
-                    # Remove "Others" from the set for special handling
-                    if "Others" in all_bands:
-                        all_bands.remove("Others")
-                    
-                    # Sort bands for consistent ordering
-                    all_bands = sorted(list(all_bands))
-                    
-                    # Define color maps for different starting bands
-                    colormap_assignments = {
-                        'n25': ('Reds', cm.Reds),
-                        'n71': ('Blues', cm.Blues),
-                        'n41': ('Greens', cm.Greens),
-                        'n260': ('Oranges', cm.Oranges),
-                        'n261': ('Purples', cm.Purples),
-                        'n77': ('YlOrRd', cm.YlOrRd),
-                        'n78': ('YlGn', cm.YlGn),
-                        'b2': ('BuPu', cm.BuPu),
-                        'b4': ('GnBu', cm.GnBu),
-                        'b12': ('RdPu', cm.RdPu),
-                    }
-                    
-                    # Default colormap for bands that don't match any prefix
-                    default_colormap_name = 'viridis'
-                    default_colormap = cm.viridis
-                    
-                    # Group bands by their primary band (first band in combination)
-                    band_groups = {}
-                    
-                    for band in all_bands:
-                        # Get the primary band (first band in combination)
-                        if ':' in band:
-                            primary_band = band.split(':')[0]
-                            complexity = band.count(':') + 1  # Number of bands in combination
-                        else:
-                            primary_band = band
-                            complexity = 1
-                        
-                        # Find colormap for this primary band
-                        assigned_colormap_name = default_colormap_name
-                        assigned_colormap = default_colormap
-                        
-                        for prefix, (cmap_name, cmap) in colormap_assignments.items():
-                            if primary_band.startswith(prefix):
-                                assigned_colormap_name = cmap_name
-                                assigned_colormap = cmap
-                                break
-                        
-                        # Group by primary band and colormap
-                        if primary_band not in band_groups:
-                            band_groups[primary_band] = {
-                                'colormap': assigned_colormap,
-                                'bands_by_complexity': {}
-                            }
-                        
-                        # Group by complexity within each primary band group
-                        if complexity not in band_groups[primary_band]['bands_by_complexity']:
-                            band_groups[primary_band]['bands_by_complexity'][complexity] = []
-                        
-                        band_groups[primary_band]['bands_by_complexity'][complexity].append(band)
-                    
-                    # Create the color mapping
-                    color_map = {}
-                    
-                    for primary_band, group_data in band_groups.items():
-                        cmap = group_data['colormap']
-                        complexity_groups = group_data['bands_by_complexity']
-                        
-                        # Get all complexities for this primary band, sorted
-                        complexities = sorted(complexity_groups.keys())
-                        max_complexity = max(complexities)
-                        
-                        # Assign colors based on complexity
-                        for complexity in complexities:
-                            bands = sorted(complexity_groups[complexity])  # Sort alphabetically within complexity
-                            
-                            # Calculate color intensity based on complexity
-                            # Single bands (complexity=1) get lighter colors (0.3-0.5)
-                            # Higher complexity gets progressively darker (up to 0.9)
-                            if max_complexity == 1:
-                                # If only single bands exist, use middle range
-                                color_intensity = 0.6
-                            else:
-                                # Map complexity to color intensity: 1->0.3, max->0.9
-                                min_intensity = 0.3
-                                max_intensity = 0.9
-                                color_intensity = min_intensity + (complexity - 1) / (max_complexity - 1) * (max_intensity - min_intensity)
-                            
-                            # If multiple bands have the same complexity, spread them around the target intensity
-                            if len(bands) > 1:
-                                intensity_range = 0.1  # Small range around target intensity
-                                intensities = np.linspace(
-                                    max(0.2, color_intensity - intensity_range/2), 
-                                    min(0.95, color_intensity + intensity_range/2), 
-                                    len(bands)
-                                )
-                            else:
-                                intensities = [color_intensity]
-                            
-                            # Assign colors to bands
-                            for i, band in enumerate(bands):
-                                color_map[band] = cmap(intensities[i])
-                    
-                    # Add "Others" with gray color
-                    color_map["Others"] = (0.7, 0.7, 0.7, 1.0)
-                    
-                    return color_map
-
-                # Main plotting code
-                if 1:
-                    # Process both NSA and SA data
-                    processed_dl_ca_count = {
-                        'NSA': process_bands(dl_ca_count['NSA']),
-                        'SA': process_bands(dl_ca_count['SA'])
-                    }
-
-                    # Get color mapping
-                    band_colors = get_band_color_mapping(processed_dl_ca_count)
-
-                    # Find all unique CA values
-                    all_cas = set()
-                    for category in processed_dl_ca_count.values():
-                        all_cas.update(category.keys())
-                    max_ca = max(all_cas) if all_cas else 0
-
-                    # Find all unique bands across all categories and CA levels
-                    all_bands_set = set()
-                    for category_data in processed_dl_ca_count.values():
-                        for ca_data in category_data.values():
-                            all_bands_set.update(ca_data.keys())
-                    
-                    # Custom sorting function for legend order
-                    def sort_bands_for_legend(bands):
-                        # Separate "Others" for special handling
-                        others = [b for b in bands if b == "Others"]
-                        regular_bands = [b for b in bands if b != "Others"]
-                        
-                        # Group bands by their primary band (first band in the combination)
-                        band_groups = {}
-                        for band in regular_bands:
-                            if ':' in band:
-                                primary = band.split(':')[0]
-                            else:
-                                primary = band
-                            
-                            if primary not in band_groups:
-                                band_groups[primary] = []
-                            band_groups[primary].append(band)
-                        
-                        # Sort each group by complexity (number of bands) in ASCENDING order (1, 2, 3 bands)
-                        sorted_bands = []
-                        for primary in sorted(band_groups.keys()):
-                            group_bands = band_groups[primary]
-                            # Sort by number of bands (complexity) ascending, then alphabetically
-                            group_bands.sort(key=lambda x: (x.count(':'), x))
-                            sorted_bands.extend(group_bands)
-                        
-                        # Add "Others" at the end
-                        sorted_bands.extend(others)
-                        
-                        return sorted_bands
-
-                    # Apply custom sorting to all_bands
-                    all_bands = sort_bands_for_legend(list(all_bands_set))
-
-                    # Create figure with stacked bar plot
-                    fig, ax = plt.subplots(figsize=(12, 8))
-                    fig.patch.set_edgecolor('black')
-                    fig.patch.set_linewidth(2)
-
-                    # Prepare data for stacked bars
-                    categories = ['NSA', 'SA']
-                    x_labels = []
-                    bar_data = {band: [] for band in all_bands}
-
-                    # Build x-axis labels and data
-                    for category in categories:
-                        for ca in range(1, max_ca + 1):
-                            x_labels.append(f"{ca} CA\n({category})")
-                            
-                            # Get data for this CA and category
-                            if ca in processed_dl_ca_count[category]:
-                                ca_data = processed_dl_ca_count[category][ca]
-                                for band in all_bands:
-                                    bar_data[band].append(ca_data.get(band, 0))
-                            else:
-                                # If CA doesn't exist for this category, add zeros
-                                for band in all_bands:
-                                    bar_data[band].append(0)
-
-                    # Create stacked bars in the sorted order
-                    x_pos = range(len(x_labels))
-                    bottom = [0] * len(x_labels)
-
-                    for band in all_bands:  # This now uses the sorted order
-                        ax.bar(x_pos, bar_data[band], bottom=bottom, 
-                            label=band, color=band_colors[band], 
-                            edgecolor='white', linewidth=1)
-                        
-                        # Update bottom for next stack
-                        bottom = [b + v for b, v in zip(bottom, bar_data[band])]
-
-                    # Customize the plot
-                    ax.set_xlabel('CA Level and Technology', fontsize=14, fontweight='bold')
-                    ax.set_ylabel('Percentage (%)', fontsize=14, fontweight='bold')
-
-                    # Set x-axis
-                    ax.set_xticks(x_pos)
-                    ax.set_xticklabels(x_labels, fontsize=12)
-                    
-                    # Set y-axis to percentage
-                    ax.set_ylim(0, 100)
-                    
-                    # Add grid for better readability
-                    ax.grid(axis='y', alpha=0.3, linestyle='--')
-                    
-                    # Add legend
-                    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=10)
-                    
-                    # Add value labels on bars (optional - only for segments > 5%)
-                    for i, x in enumerate(x_pos):
-                        cumulative = 0
-                        for band in all_bands:
-                            value = bar_data[band][i]
-                            if value > 5:  # Only show labels for segments > 5%
-                                y_pos = cumulative + value/2
-                                ax.text(x, y_pos, f'{value:.1f}%', ha='center', va='center', 
-                                    fontsize=8, fontweight='bold', color='white')
-                            cumulative += value
-
-                    # Adjust layout
-                    plt.tight_layout()
-
-                    # Save figure
-                    plt.savefig('../plots/yearwise/ca_band_dl_distribution_stacked.pdf', 
-                                bbox_inches='tight')
-                    plt.close()
-                    a= 1
-            
             # plot band distribution - DL - stacked - hatched
             if 1:
 
@@ -1563,99 +1122,10 @@ if 1:
                     plt.subplots_adjust(top=0.8)  # Make room for legend at the top
 
                     # Save figure
-                    plt.savefig('../plots/yearwise/ca_band_dl_distribution_stacked_hatched.pdf',
+                    plt.savefig('../plots/yearwise/fig_9d_ca_band_dl_distribution_stacked_hatched.pdf',
                                 bbox_inches='tight')
                     plt.close()
                     a = 1
-
-            # plot band distribution - UL
-            if 0:
-                # Process both NSA and SA data
-                processed_ul_ca_count = {
-                    'NSA': process_bands(ul_ca_count['NSA']),
-                    'SA': process_bands(ul_ca_count['SA'])
-                }
-
-                # Get color mapping
-                band_colors = get_band_color_mapping(processed_ul_ca_count)
-
-                # Find all unique CA values
-                all_cas = set()
-                for category in processed_ul_ca_count.values():
-                    all_cas.update(category.keys())
-                max_ca = max(all_cas) if all_cas else 0
-
-                # Create figure with 2 rows (NSA, SA) and max_ca columns
-                fig, axes = plt.subplots(2, max_ca, figsize=(5*max_ca, 8))
-
-                fig.patch.set_edgecolor('black')
-                fig.patch.set_linewidth(2)
-                # If max_ca is 1, axes will not be a 2D array, so convert to 2D
-                if max_ca == 1:
-                    axes = np.array(axes).reshape(2, 1)
-
-                # Categories to plot
-                categories = ['NSA', 'SA']
-
-                # Plot pie charts
-                for row, category in enumerate(categories):
-                    for col in range(max_ca):
-                        ca = col + 1  # CA values start from 1
-                        
-                        # If this CA exists for this category
-                        if ca in processed_ul_ca_count[category]:
-                            ax = axes[row, col]
-                            
-                            # Get band data for this CA
-                            bands_data = processed_ul_ca_count[category][ca]
-                            labels = list(bands_data.keys())
-                            sizes = list(bands_data.values())
-                            
-                            # Create label text with percentages
-                            # label_texts = [f"{label}\n({size:.1f}%)" for label, size in zip(labels, sizes)]
-                            label_texts = [label for label, size in zip(labels, sizes)]
-                            # Get colors for each band
-                            colors = [band_colors[band] for band in labels]
-                            
-                            # Use matplotlib's built-in pie chart with external labels
-                            wedges, texts = ax.pie(
-                                sizes,
-                                colors=colors,
-                                labels=label_texts,
-                                labeldistance=1.1,  # Position labels just outside the pie
-                                wedgeprops={'edgecolor': 'w', 'linewidth': 1},
-                                textprops={'fontsize': 16, 'ha': 'center'},  # Increased font size from 8 to 10
-                                startangle=90,
-                                radius=0.8  # Make pie slightly smaller to leave room for labels
-                            )
-                            
-                            # Draw connecting lines from pie to labels
-                            for i, wedge in enumerate(wedges):
-                                if sizes[i] < 3:  # Skip very small wedges to reduce clutter
-                                    texts[i].set_visible(False)
-                                    continue
-                                
-                                # Adjust text alignment for better readability
-                                angle = (wedge.theta1 + wedge.theta2) / 2
-                                if 90 < angle < 270:  # Left side of the pie
-                                    texts[i].set_ha('right')
-                                else:  # Right side of the pie
-                                    texts[i].set_ha('left')
-                            
-                            # Modified title format: "CA # (NSA/SA)" and made larger and bold
-                            ax.set_title(f"{ca} CA ({category})", fontsize=16, fontweight='bold')
-                        else:
-                            # If this CA doesn't exist for this category, hide the axes
-                            axes[row, col].axis('off')
-
-                # Adjust layout with extra padding for labels
-                plt.tight_layout(pad=2.0)
-
-                # Save figure
-                plt.savefig('../plots/yearwise/ca_band_ul_distribution.pdf', 
-                            bbox_inches='tight')
-                plt.close()
-                a = 1
 
             # plot band distribution - UL - hatched
             if 1:
@@ -1956,7 +1426,7 @@ if 1:
                 # plt.subplots_adjust(top=0.85)  # Make room for legend at the top
 
                 # Save figure
-                plt.savefig('../plots/yearwise/ca_band_ul_distribution_stacked_hatched.pdf', 
+                plt.savefig('../plots/yearwise/fig_9b_ca_band_ul_distribution_stacked_hatched.pdf', 
                             bbox_inches='tight')
                 plt.close()
                 a = 1
@@ -2102,7 +1572,7 @@ if 1:
                 plt.tight_layout()
 
                 # Save the figure
-                plt.savefig('../plots/yearwise/bw_dl_xput_distribution.pdf')
+                plt.savefig('../plots/yearwise/fig_11b_bw_dl_xput_distribution.pdf')
                 plt.close()
 
         # bw - ul 
@@ -2245,7 +1715,7 @@ if 1:
                 plt.tight_layout()
 
                 # Save the figure
-                plt.savefig('../plots/yearwise/bw_ul_xput_distribution.pdf')
+                plt.savefig('../plots/yearwise/fig_12b_bw_ul_xput_distribution.pdf')
                 plt.close()
 
 
@@ -2555,118 +2025,8 @@ if 1:
                     plt.tight_layout()
 
                     # Show the plot
-                    plt.savefig('../plots/yearwise/sa_nsa_ca_overall_distribution_2023.pdf')
+                    plt.savefig('../plots/yearwise/fig_8a_sa_nsa_ca_overall_distribution_2023.pdf')
                     plt.close()
-
-            # plot band distribution - DL
-            if 0:
-                # Process both NSA and SA data
-                processed_dl_ca_count = {
-                    'NSA': process_bands(dl_ca_count['NSA']),
-                    'SA': process_bands(dl_ca_count['SA'])
-                }
-
-                # Get color mapping
-                band_colors = get_band_color_mapping(processed_dl_ca_count)
-                band_colors = {'Others': (0.7, 0.7, 0.7, 1.0),
-                'n25':np.array([0.267004, 0.004874, 0.329415, 1.      ]),
-                'n25:n41:n41':np.array([0.280267, 0.073417, 0.397163, 1.      ]),
-                'n25:n71':np.array([0.282623, 0.140926, 0.457517, 1.      ]),
-                'n25:n71:n41':np.array([0.273006, 0.20452 , 0.501721, 1.      ]),
-                'n25:n71:n41:n41':np.array([0.253935, 0.265254, 0.529983, 1.      ]),
-                'n41':np.array([0.229739, 0.322361, 0.545706, 1.      ]),
-                'n41:n25':np.array([0.206756, 0.371758, 0.553117, 1.      ]),
-                'n41:n25:n25:n41':np.array([0.183898, 0.422383, 0.556944, 1.      ]),
-                'n41:n25:n41':np.array([0.163625, 0.471133, 0.558148, 1.      ]),
-                'n41:n25:n71':np.array([0.144759, 0.519093, 0.556572, 1.      ]),
-                'n41:n41':np.array([0.127568, 0.566949, 0.550556, 1.      ]),
-                'n41:n41:n25':np.array([0.119423, 0.611141, 0.538982, 1.      ]),
-                'n41:n41:n71:n25':np.array([0.134692, 0.658636, 0.517649, 1.      ]),
-                'n41:n71':np.array([0.185783, 0.704891, 0.485273, 1.      ]),
-                'n41:n71:n25':np.array([0.266941, 0.748751, 0.440573, 1.      ]),
-                'n41:n71:n25:n41':np.array([0.369214, 0.788888, 0.382914, 1.      ]),
-                'n41:n71:n41':np.array([0.477504, 0.821444, 0.318195, 1.      ]),
-                'n41:n71:n41:n25':np.array([0.606045, 0.850733, 0.236712, 1.      ]),
-                'n71':np.array([0.741388, 0.873449, 0.149561, 1.      ]),
-                'n71:n25':np.array([0.876168, 0.891125, 0.09525 , 1.      ]),
-                'n71:n41':np.array([0.993248, 0.906157, 0.143936, 1.      ])}
-                # Find all unique CA values
-                all_cas = set()
-                for category in processed_dl_ca_count.values():
-                    all_cas.update(category.keys())
-                max_ca = max(all_cas) if all_cas else 0
-
-                # Create figure with 2 rows (NSA, SA) and max_ca columns
-                fig, axes = plt.subplots(2, max_ca, figsize=(5*max_ca, 8))
-                fig.patch.set_edgecolor('black')
-                fig.patch.set_linewidth(2)
-
-                # If max_ca is 1, axes will not be a 2D array, so convert to 2D
-                if max_ca == 1:
-                    axes = np.array(axes).reshape(2, 1)
-
-                # Categories to plot
-                categories = ['NSA', 'SA']
-
-                # Plot pie charts
-                for row, category in enumerate(categories):
-                    for col in range(max_ca):
-                        ca = col + 1  # CA values start from 1
-                        
-                        # If this CA exists for this category
-                        if ca in processed_dl_ca_count[category]:
-                            ax = axes[row, col]
-                            
-                            # Get band data for this CA
-                            bands_data = processed_dl_ca_count[category][ca]
-                            labels = list(bands_data.keys())
-                            sizes = list(bands_data.values())
-                            
-                            # Create label text with percentages
-                            # label_texts = [f"{label}\n({size:.1f}%)" for label, size in zip(labels, sizes)]
-                            label_texts = [label for label, size in zip(labels, sizes)]
-                            
-                            # Get colors for each band
-                            colors = [band_colors[band] for band in labels]
-                            
-                            # Use matplotlib's built-in pie chart with external labels
-                            wedges, texts = ax.pie(
-                                sizes,
-                                colors=colors,
-                                labels=label_texts,
-                                labeldistance=1.1,  # Position labels just outside the pie
-                                wedgeprops={'edgecolor': 'w', 'linewidth': 1},
-                                textprops={'fontsize': 16, 'ha': 'center'},  # Increased font size from 8 to 10
-                                startangle=90,
-                                radius=0.8  # Make pie slightly smaller to leave room for labels
-                            )
-                            
-                            # Draw connecting lines from pie to labels
-                            for i, wedge in enumerate(wedges):
-                                if sizes[i] < 3:  # Skip very small wedges to reduce clutter
-                                    texts[i].set_visible(False)
-                                    continue
-                                
-                                # Adjust text alignment for better readability
-                                angle = (wedge.theta1 + wedge.theta2) / 2
-                                if 90 < angle < 270:  # Left side of the pie
-                                    texts[i].set_ha('right')
-                                else:  # Right side of the pie
-                                    texts[i].set_ha('left')
-                            
-                            # Modified title format: "CA # (NSA/SA)" and made larger and bold
-                            ax.set_title(f"{ca} CA ({category})", fontsize=16, fontweight='bold')
-                        else:
-                            # If this CA doesn't exist for this category, hide the axes
-                            axes[row, col].axis('off')
-
-                # Adjust layout with extra padding for labels
-                plt.tight_layout(pad=2.0)
-
-                # Save figure
-                plt.savefig('../plots/yearwise/ca_band_dl_distribution_2023.pdf', 
-                            bbox_inches='tight')
-                plt.close()
 
             # plot band distribution - DL - Stacked - hatched
             if 1:
@@ -2920,103 +2280,9 @@ if 1:
                 # plt.subplots_adjust(top=0.85)  # Make room for legend at the top
 
                 # Save figure
-                plt.savefig('../plots/yearwise/ca_band_dl_distribution_2023_stacked_hatched.pdf',
+                plt.savefig('../plots/yearwise/fig_9c_ca_band_dl_distribution_2023_stacked_hatched.pdf',
                             bbox_inches='tight')
                 plt.close()
-
-            # plot band distribution - UL
-            if 0:
-                # Process both NSA and SA data
-                processed_ul_ca_count = {
-                    'NSA': process_bands(ul_ca_count['NSA']),
-                    'SA': process_bands(ul_ca_count['SA'])
-                }
-
-                # Get color mapping
-                band_colors = get_band_color_mapping(processed_ul_ca_count)
-                band_colors = {'Others': (0.7, 0.7, 0.7, 1.0),
-                'n25':np.array([0.267004, 0.004874, 0.329415, 1.      ]),
-                'n41':np.array([0.190631, 0.407061, 0.556089, 1.      ]),
-                'n41:n25':np.array([0.20803 , 0.718701, 0.472873, 1.      ]),
-                'n71':np.array([0.993248, 0.906157, 0.143936, 1.      ])}
-                # Find all unique CA values
-                all_cas = set()
-                for category in processed_ul_ca_count.values():
-                    all_cas.update(category.keys())
-                max_ca = max(all_cas) if all_cas else 0
-
-                # Create figure with 2 rows (NSA, SA) and max_ca columns
-                fig, axes = plt.subplots(2, max_ca, figsize=(5*max_ca, 8))
-                fig.patch.set_edgecolor('black')
-                fig.patch.set_linewidth(2)
-
-                # If max_ca is 1, axes will not be a 2D array, so convert to 2D
-                if max_ca == 1:
-                    axes = np.array(axes).reshape(2, 1)
-
-                # Categories to plot
-                categories = ['NSA', 'SA']
-
-                # Plot pie charts
-                for row, category in enumerate(categories):
-                    for col in range(max_ca):
-                        ca = col + 1  # CA values start from 1
-                        
-                        # If this CA exists for this category
-                        if ca in processed_ul_ca_count[category]:
-                            ax = axes[row, col]
-                            
-                            # Get band data for this CA
-                            bands_data = processed_ul_ca_count[category][ca]
-                            labels = list(bands_data.keys())
-                            sizes = list(bands_data.values())
-                            
-                            # Create label text with percentages
-                            # label_texts = [f"{label}\n({size:.1f}%)" for label, size in zip(labels, sizes)]
-                            label_texts = [label for label, size in zip(labels, sizes)]
-
-                            # Get colors for each band
-                            colors = [band_colors[band] for band in labels]
-                            
-                            # Use matplotlib's built-in pie chart with external labels
-                            wedges, texts = ax.pie(
-                                sizes,
-                                colors=colors,
-                                labels=label_texts,
-                                labeldistance=1.1,  # Position labels just outside the pie
-                                wedgeprops={'edgecolor': 'w', 'linewidth': 1},
-                                textprops={'fontsize': 16, 'ha': 'center'},  # Increased font size from 8 to 10
-                                startangle=90,
-                                radius=0.8  # Make pie slightly smaller to leave room for labels
-                            )
-                            
-                            # Draw connecting lines from pie to labels
-                            for i, wedge in enumerate(wedges):
-                                if sizes[i] < 3:  # Skip very small wedges to reduce clutter
-                                    texts[i].set_visible(False)
-                                    continue
-                                
-                                # Adjust text alignment for better readability
-                                angle = (wedge.theta1 + wedge.theta2) / 2
-                                if 90 < angle < 270:  # Left side of the pie
-                                    texts[i].set_ha('right')
-                                else:  # Right side of the pie
-                                    texts[i].set_ha('left')
-                            
-                            # Modified title format: "CA # (NSA/SA)" and made larger and bold
-                            ax.set_title(f"{ca} CA ({category})", fontsize=16, fontweight='bold')
-                        else:
-                            # If this CA doesn't exist for this category, hide the axes
-                            axes[row, col].axis('off')
-
-                # Adjust layout with extra padding for labels
-                plt.tight_layout(pad=2.0)
-
-                # Save figure
-                plt.savefig('../plots/yearwise/ca_band_ul_distribution_2023.pdf', 
-                            bbox_inches='tight')
-                plt.close()
-                a = 1
 
             # plot band distribution - UL -- stacked hatched
             if 1:
@@ -3304,11 +2570,9 @@ if 1:
                     # plt.subplots_adjust(top=0.85)  # Make room for legend at the top
 
                     # Save figure
-                    plt.savefig('../plots/yearwise/ca_band_ul_distribution_2023_stacked_hatched.pdf', 
+                    plt.savefig('../plots/yearwise/fig_9a_ca_band_ul_distribution_2023_stacked_hatched.pdf', 
                                 bbox_inches='tight')
                     plt.close()
-                    a = 1
-                a = 1
 
         # bw - dl
         if 1:
@@ -3452,7 +2716,7 @@ if 1:
                 plt.tight_layout()
 
                 # Save the figure
-                plt.savefig('../plots/yearwise/bw_dl_xput_distribution_2023.pdf')
+                plt.savefig('../plots/yearwise/fig_11a_bw_dl_xput_distribution_2023.pdf')
                 plt.close()
 
         # bw - ul 
@@ -3595,7 +2859,7 @@ if 1:
                 plt.tight_layout()
 
                 # Save the figure
-                plt.savefig('../plots/yearwise/bw_ul_xput_distribution_2023.pdf')
+                plt.savefig('../plots/yearwise/fig_12a_bw_ul_xput_distribution_2023.pdf')
                 plt.close()
         
     # bw ca combined 
@@ -3739,8 +3003,7 @@ if 1:
             ax.tick_params(axis='both', labelsize=25)
             
             plt.tight_layout()
-            plt.savefig(f'../plots/yearwise/{direction.lower()}_ca_vs_bw_{tech}_combined.pdf', dpi=300)
-            plt.savefig(f'../plots/yearwise/{direction.lower()}_ca_vs_bw_{tech}_combined.pdf')
+            plt.savefig(f'../plots/yearwise/fig_10_{direction.lower()}_ca_vs_bw_{tech}_combined.pdf')
             plt.close()
             a = 1
 
@@ -3767,7 +3030,7 @@ if 1:
         ax.grid(True)
         ax.set_xlim(xmin=0, xmax=200)
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/ping_sa_nsa_xput_overall.pdf')
+        plt.savefig('../plots/yearwise/fig_13a_ping_sa_nsa_xput_overall.pdf')
         plt.close()
 
         fig, ax = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
@@ -3816,7 +3079,7 @@ if 1:
         ax[1].grid(True)
         ax[0].set_ylim(0, 1)
         plt.tight_layout()
-        plt.savefig('../plots/yearwise/ping_sa_nsa_band_yearwise.pdf')
+        plt.savefig('../plots/yearwise/fig_13b_ping_sa_nsa_band_yearwise.pdf')
         plt.close()
 
 
@@ -3834,7 +3097,7 @@ if 1:
     ax.grid(True)
     ax.legend(loc='best', fontsize=14)
     plt.tight_layout()
-    plt.savefig('../plots/yearwise/ho_duration_overall.pdf')
+    plt.savefig('../plots/yearwise/fig_14a_ho_duration_overall.pdf')
     plt.close()
 
 
@@ -3862,7 +3125,62 @@ if 1:
     ax[0].grid(True)
     ax[1].grid(True)
     plt.tight_layout()
-    plt.savefig('../plots/yearwise/ho_duration_break.pdf')
+    plt.savefig('../plots/yearwise/fig_14b_ho_duration_break.pdf')
+    plt.close()
+
+
+    color_dict = {'5G-cipher-only' : 'salmon', '5G-cipher+lte-(cipher+integrity)' : 'black', 'no-5G-cipher-integrity' : 'slategrey', 'no-5G-or-lte-cipher-integrity' : 'slategrey', '5G-cipher+5G-integrity' : 'black'}
+    label_dict = {'5G-cipher-only' : '5G cipher only', '5G-cipher+lte-(cipher+integrity)' : '5G cipher & LTE\n(cipher + integrity)', 'no-5G-cipher-integrity' : 'No cipher and integrity', 'no-5G-or-lte-cipher-integrity' : 'No cipher and integrity', '5G-cipher+5G-integrity' : '5G cipher & 5G integrity'}
+    sa_sec_dict = {'5G-cipher-only' : [], '5G-integrity-only' : [], '5G-cipher+5G-integrity' : [], 'no-5G-cipher-integrity' : [], 'unknown' : []}
+    for sa_latency_sec_combo in sa_latency_sec_list:
+        ho_latency, cipher, integrity, inter_intra_str = sa_latency_sec_combo
+        if not pd.isnull(cipher) and not pd.isnull(integrity):
+            sa_sec_dict['5G-cipher+5G-integrity'].append(ho_latency)
+        elif not pd.isnull(cipher) and pd.isnull(integrity):
+            sa_sec_dict['5G-cipher-only'].append(ho_latency)
+        elif pd.isnull(cipher) and not pd.isnull(integrity):
+            sa_sec_dict['5G-integrity-only'].append(ho_latency)
+        elif pd.isnull(cipher) and pd.isnull(integrity):
+            sa_sec_dict['no-5G-cipher-integrity'].append(ho_latency)
+        else:
+            sa_sec_dict['unknown'].append(sa_latency_sec_combo)
+
+
+    nsa_sec_dict = {'5G-cipher-only' : [],  '5G-cipher+lte-(cipher+integrity)' : [], 'no-5G-or-lte-cipher-integrity' : [], 'unknown' : []}
+    for nsa_latency_sec_combo in nsa_latency_sec_list:
+        ho_latency, fiveg_cipher, fiveg_integrity, lte_cipher, lte_integrity, intra_inter_str = nsa_latency_sec_combo
+        if not pd.isnull(fiveg_cipher) and pd.isnull(lte_cipher):
+            nsa_sec_dict['5G-cipher-only'].append(ho_latency)
+        elif not pd.isnull(fiveg_cipher) and not pd.isnull(lte_cipher):
+            nsa_sec_dict['5G-cipher+lte-(cipher+integrity)'].append(ho_latency)
+        elif pd.isnull(fiveg_cipher) and  pd.isnull(lte_cipher):
+            nsa_sec_dict['no-5G-or-lte-cipher-integrity'].append(ho_latency)
+        else:
+            nsa_sec_dict['unknown'].append(ho_latency)
+
+    fig, ax = plt.subplots(figsize=(8, 4))
+    for sec_type in nsa_sec_dict.keys():
+        if len(nsa_sec_dict[sec_type]) == 0:
+            continue 
+        sorted_data = np.sort(nsa_sec_dict[sec_type])
+        ax.plot(sorted_data, np.linspace(0, 1, sorted_data.size), label="NSA (" + label_dict[sec_type] + ")", color=color_dict[sec_type])
+
+    for sec_type in sa_sec_dict.keys():
+        if len(sa_sec_dict[sec_type]) == 0:
+            continue 
+        sorted_data = np.sort(sa_sec_dict[sec_type])
+        ax.plot(sorted_data, np.linspace(0, 1, sorted_data.size), label="SA (" + label_dict[sec_type]+ ")" , color=color_dict[sec_type], ls='--')
+
+    ax.set_ylim(0, 1)
+    ax.set_xlim(0, 0.12)
+    # ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2, fontsize=10)
+    # ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.02), ncol=2, fontsize=11, frameon=True)
+    ax.legend(loc='lower right', fontsize=14)
+    ax.grid(True)
+    ax.set_ylabel("CDF")
+    ax.set_xlabel("Handover duration (s)")
+    plt.tight_layout()
+    plt.savefig('../plots/yearwise/fig_14c_ho_duration_security_break.pdf')
     plt.close()
 
     fig, ax = plt.subplots(1, 2, figsize=(6, 3), sharey=True)
@@ -3922,7 +3240,7 @@ if 1:
     # ax[2].grid(True)
     # ax[3].grid(True)
     plt.tight_layout()
-    plt.savefig('../plots/yearwise/tx_power_mixed.pdf')
+    plt.savefig('../plots/yearwise/fig_15a_tx_power_mixed.pdf')
     plt.close()
 
     fig, ax = plt.subplots(figsize=(3, 3))
@@ -3941,7 +3259,7 @@ if 1:
     ax.set_xlim(80, 140)
     ax.grid(True)
     plt.tight_layout()
-    plt.savefig('../plots/yearwise/pathloss_mixed.pdf')
+    plt.savefig('../plots/yearwise/fig_15b_pathloss_mixed.pdf')
     plt.close()
 
     fig, ax = plt.subplots(figsize=(4, 3))
@@ -4061,5 +3379,5 @@ if 1:
     # ax[3].set_xlim(80, 150)
     # ax[0].legend(loc='best')
     plt.tight_layout()
-    plt.savefig('../plots/yearwise/tx_power_break_mixed.pdf')
+    plt.savefig('../plots/yearwise/fig_15c_tx_power_break_mixed.pdf')
     plt.close()
