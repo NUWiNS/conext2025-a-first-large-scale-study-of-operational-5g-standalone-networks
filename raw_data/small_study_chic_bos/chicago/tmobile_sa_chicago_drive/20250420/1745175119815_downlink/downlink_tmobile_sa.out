@@ -1,0 +1,62 @@
+Start time: 1745175119815
+Connecting to host 34.86.116.81, port 5209
+Reverse mode, remote host 34.86.116.81 is sending
+[  5] local 192.0.0.2 port 50478 connected to 34.86.116.81 port 5209
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-0.10   sec  50.6 KBytes  4.14 Mbits/sec                  
+[  5]   0.10-0.20   sec   233 KBytes  19.0 Mbits/sec                  
+[  5]   0.20-0.30   sec  1.00 MBytes  84.0 Mbits/sec                  
+[  5]   0.30-0.40   sec  2.00 MBytes   168 Mbits/sec                  
+[  5]   0.40-0.50   sec  2.62 MBytes   220 Mbits/sec                  
+[  5]   0.50-0.60   sec  4.02 MBytes   337 Mbits/sec                  
+[  5]   0.60-0.70   sec  3.12 MBytes   262 Mbits/sec                  
+[  5]   0.70-0.80   sec  6.94 MBytes   583 Mbits/sec                  
+[  5]   0.80-0.90   sec  7.29 MBytes   612 Mbits/sec                  
+[  5]   0.90-1.00   sec  5.67 MBytes   475 Mbits/sec                  
+[  5]   1.00-1.10   sec  6.42 MBytes   538 Mbits/sec                  
+[  5]   1.10-1.20   sec  5.36 MBytes   450 Mbits/sec                  
+[  5]   1.20-1.30   sec  5.08 MBytes   426 Mbits/sec                  
+[  5]   1.30-1.40   sec  5.00 MBytes   419 Mbits/sec                  
+[  5]   1.40-1.50   sec  5.17 MBytes   434 Mbits/sec                  
+[  5]   1.50-1.60   sec  4.94 MBytes   415 Mbits/sec                  
+[  5]   1.60-1.70   sec  5.01 MBytes   419 Mbits/sec                  
+[  5]   1.70-1.80   sec  4.82 MBytes   405 Mbits/sec                  
+[  5]   1.80-1.90   sec  4.29 MBytes   360 Mbits/sec                  
+[  5]   1.90-2.00   sec  4.02 MBytes   337 Mbits/sec                  
+[  5]   2.00-2.10   sec  3.83 MBytes   321 Mbits/sec                  
+[  5]   2.10-2.20   sec  4.60 MBytes   386 Mbits/sec                  
+[  5]   2.20-2.30   sec  4.24 MBytes   355 Mbits/sec                  
+[  5]   2.30-2.40   sec  2.14 MBytes   180 Mbits/sec                  
+[  5]   2.40-2.50   sec  2.82 MBytes   237 Mbits/sec                  
+[  5]   2.50-2.60   sec  2.57 MBytes   215 Mbits/sec                  
+[  5]   2.60-2.70   sec  4.32 MBytes   362 Mbits/sec                  
+[  5]   2.70-2.80   sec  4.39 MBytes   368 Mbits/sec                  
+[  5]   2.80-2.90   sec  3.54 MBytes   297 Mbits/sec                  
+[  5]   2.90-3.00   sec  3.20 MBytes   268 Mbits/sec                  
+[  5]   3.00-3.10   sec  2.75 MBytes   231 Mbits/sec                  
+[  5]   3.10-3.20   sec   882 KBytes  72.2 Mbits/sec                  
+[  5]   3.20-3.30   sec  2.67 MBytes   224 Mbits/sec                  
+[  5]   3.30-3.40   sec  4.45 MBytes   373 Mbits/sec                  
+[  5]   3.40-3.50   sec  1.34 MBytes   113 Mbits/sec                  
+[  5]   3.50-3.60   sec  1.70 MBytes   143 Mbits/sec                  
+[  5]   3.60-3.70   sec  1.78 MBytes   149 Mbits/sec                  
+[  5]   3.70-3.80   sec  3.96 MBytes   331 Mbits/sec                  
+[  5]   3.80-3.90   sec  4.41 MBytes   372 Mbits/sec                  
+[  5]   3.90-4.00   sec  3.03 MBytes   254 Mbits/sec                  
+[  5]   4.00-4.10   sec  2.74 MBytes   230 Mbits/sec                  
+[  5]   4.10-4.20   sec  2.96 MBytes   248 Mbits/sec                  
+[  5]   4.20-4.30   sec  3.01 MBytes   252 Mbits/sec                  
+[  5]   4.30-4.40   sec  2.91 MBytes   244 Mbits/sec                  
+[  5]   4.40-4.50   sec  2.50 MBytes   210 Mbits/sec                  
+[  5]   4.50-4.60   sec  2.57 MBytes   216 Mbits/sec                  
+[  5]   4.60-4.70   sec  2.81 MBytes   235 Mbits/sec                  
+[  5]   4.70-4.80   sec  2.73 MBytes   230 Mbits/sec                  
+[  5]   4.80-4.90   sec  2.80 MBytes   235 Mbits/sec                  
+[  5]   4.90-5.00   sec  2.95 MBytes   247 Mbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-5.04   sec   454 MBytes   755 Mbits/sec   24             sender
+[  5]   0.00-5.00   sec   174 MBytes   291 Mbits/sec                  receiver
+
+iperf Done.
+End time: 1745175125456
