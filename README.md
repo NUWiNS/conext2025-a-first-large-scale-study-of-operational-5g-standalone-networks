@@ -18,6 +18,34 @@ paper, *A First Large-Scale Study of Operational 5G Standalone Networks*.
 [[Y. Charlie Hu](https://engineering.purdue.edu/~ychu/)]
 [[Dimitrios Koutsonikolas](https://ece.northeastern.edu/fac-ece/dkoutsonikolas/)]
 
+
+---
+
+## Repository Structure & Usage
+
+- **`raw_data/`**  
+  Contains the original measurement data in `.xlsx` and `.csv` formats.
+
+- **`scripts/`**  
+  Contains two Python scripts for generating processed data:
+  - Each script supports two flags inside the script. Set it to 1 to enable and 0 to disable:  
+    1. `process`: Reads the raw data and stores processed output in the `pkls/` folder.  
+    2. `parse`: Parses the processed data from `pkls/` and generates results/plots in the `plots/` folder.  
+
+- **`pkls/`**  
+  Stores intermediate processed data (pickled Python objects).
+
+- **`plots/`**  
+  Contains the final parsed/visualized results, including replication figures.
+
+---
+
+## Data Access
+
+Note: Use the following command to download large dataset files stored with Git LFS:
+```bash
+git lfs pull
+```
 ---
 ## References
 
