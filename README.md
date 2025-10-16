@@ -18,6 +18,35 @@ paper, *A First Large-Scale Study of Operational 5G Standalone Networks*.
 [[Y. Charlie Hu](https://engineering.purdue.edu/~ychu/)]
 [[Dimitrios Koutsonikolas](https://ece.northeastern.edu/fac-ece/dkoutsonikolas/)]
 
+
+---
+
+## Repository Structure & Usage
+
+- **`raw_data/`**  
+  Contains the original measurement data in `.xlsx` and `.csv` formats.
+
+- **`scripts/`**  
+  The scripts directory contains two types of scripts:
+  1. **Process data scripts** — `parse_sa_nsa_perf_data_2023.py` and `parse_sa_nsa_perf_data_2024_lax_bos.py`  
+     These scripts use the raw measurement data from the `raw_data/` directory and generate processed pickle (`.pkl`) files, which are stored in the `pkls/` folder.  
+  2. **Parse data scripts** — `plot-figures.py` generates all figures presented in the ACM CoNEXT paper using both 2023 and 2024 datasets.  
+     Additionally, `tmobile_nsa_sa_boston.py` and `tmobile_nsa_sa_chicago.py` generate plots specific to the head-to-head SA vs. NSA analysis conducted in Boston and Chicago.
+
+- **`pkls/`**  
+  Stores intermediate processed data (pickled Python objects).
+
+- **`plots/`**  
+  Contains the final parsed/visualized results, including replication figures.
+
+---
+
+## Data Access
+
+Note: Use the following command to download large dataset files stored with Git LFS:
+```bash
+git lfs pull
+```
 ---
 ## References
 
