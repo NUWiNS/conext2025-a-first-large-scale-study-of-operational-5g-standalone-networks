@@ -1,48 +1,12 @@
-import re
-import sys
-import os
-import glob
 import numpy as np 
 import pandas as pd 
 import pickle as pkl 
-import geopandas as gpd
-import contextily as cx
 import matplotlib.pyplot as plt
-import xyzservices as xyz
-import geopy.distance
-import random
-import matplotlib.patches as mpatches
-from pprint import pprint
-from geopy.distance import distance
-from geopy.distance import geodesic
-from shapely.geometry import Point
 from collections import Counter
-from collections import defaultdict
-from earfcn.convert import earfcn2freq, earfcn2band, freq2earfcn
-from timezonefinder import TimezoneFinder
-obj = TimezoneFinder()
-import matplotlib.patches as patches
-from pprint import pprint
-from collections import defaultdict
-import math
 import matplotlib as mpl
-from mpl_toolkits.mplot3d import Axes3D
 
 original_rc = mpl.rcParams.copy()
 
-def get_tz_info(first_lat_lon):
-    try:
-        temp_first_tz = obj.timezone_at(lng=first_lat_lon[-1], lat=first_lat_lon[0])
-        if "Indiana" in temp_first_tz:
-            temp_first_tz = 'America/New_York'
-        elif "Phoenix" in temp_first_tz:
-            temp_first_tz = 'America/Denver'
-        return temp_first_tz
-    except Exception as ex:
-        print("TZ cannot be fetched! Why?????")
-        print(str(ex))
-        return None
-    
 # Function to calculate the 95th percentile
 def get_percentile(data, percentile):
     return np.percentile(data, percentile)
@@ -74,13 +38,11 @@ main_band_hatches = None
 fh = open("../pkls/data_2023/city_tech_info.pkl", "rb")
 city_tech_df_1 = pkl.load(fh)
 city_tech_df_1['Lat-Lon'] = city_tech_df_1.apply(lambda row: (row['Lat'], row['Lon']), axis=1)
-city_tech_df_1['Timezone'] = city_tech_df_1['Lat-Lon'].apply(get_tz_info)
 fh.close()
 
 fh = open("../pkls/driving_trip_lax_bos_2024/city_tech_info.pkl", "rb")
 city_tech_df_3 = pkl.load(fh)
 city_tech_df_3['Lat-Lon'] = city_tech_df_3.apply(lambda row: (row['Lat'], row['Lon']), axis=1)
-city_tech_df_3['Timezone'] = city_tech_df_3['Lat-Lon'].apply(get_tz_info)
 fh.close()
 
 
