@@ -199,8 +199,8 @@ main_tech_xput_ul_diff_dict = {'5G (NSA)' : {0.5 : [], 2 : [], 4: []}, '5G (SA)'
 
 lat_lon_count = -1
 
-if os.path.exists('/home/moinakgh/csv_ho/nsa_sa_analysis_perf/pkls/driving_trip_lax_bos_2024/city_tech_info.pkl'):
-    fh = open("/home/moinakgh/csv_ho/nsa_sa_analysis_perf/pkls/driving_trip_lax_bos_2024/city_tech_info.pkl", "rb")
+if os.path.exists('../pkls/driving_trip_lax_bos_2024/city_tech_info.pkl'):
+    fh = open("../pkls/driving_trip_lax_bos_2024/city_tech_info.pkl", "rb")
     city_tech_df = pkl.load(fh)
     fh.close()
     city_tech_df['Lat-Lon'] = city_tech_df.apply(lambda row: (row['Lat'], row['Lon']), axis=1)
@@ -1895,8 +1895,6 @@ def get_ho_duration():
 
 if 1:
     get_ho_duration()
-
-else:
     extract_sa_nsa_coverage()
     extract_overall_xput_dist()
     extract_5G_lte_break_xput_dist_conext()

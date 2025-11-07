@@ -163,8 +163,8 @@ main_tech_xput_ul_diff_dict = {'5G (NSA)' : {0.5 : [], 2 : [], 4: []}, '5G (SA)'
 
 lat_lon_count = -1
 
-if os.path.exists('/home/moinakgh/csv_ho/nsa_sa_analysis_perf/pkls/data_2023/city_tech_info.pkl'):
-    fh = open("/home/moinakgh/csv_ho/nsa_sa_analysis_perf/pkls/data_2023/city_tech_info.pkl", "rb")
+if os.path.exists('../pkls/data_2023/city_tech_info.pkl'):
+    fh = open("../pkls/data_2023/city_tech_info.pkl", "rb")
     city_tech_df = pkl.load(fh)
     fh.close()
     city_tech_df['Lat-Lon'] = city_tech_df.apply(lambda row: (row['Lat'], row['Lon']), axis=1)
@@ -238,7 +238,7 @@ def extract_sa_nsa_coverage():
         elif len(city_list) == 1:
             return city_list[0]
         else:
-            print("WTF!")
+            print("WTH!")
             sys.exit(1)
 
 
